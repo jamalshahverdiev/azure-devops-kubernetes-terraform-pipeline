@@ -5,8 +5,8 @@ resources:
 - repo: self
 
 variables:
-#  tag: '$(Build.BuildId)'
-  tag: 35
+  tag: '$(Build.BuildId)'
+# tag: 35
 
 stages:
 - stage: Build
@@ -17,13 +17,14 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    # - task: Docker@2
-    #   displayName: Build an image
-    #   inputs:
-    #     command: build
-    #     dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-    #     tags: |
-    #       $(tag)
+    - task: Docker@2
+      displayName: Build and Push Docker Image
+      inputs:
+        containerRegistry: 'jamaldockerhub'
+        repository: 'jamalshahverdiev/currency-exchange'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: '$(tag)'
     - task: CopyFiles@2
       displayName: Copy file from current dir to target folder
       inputs:
