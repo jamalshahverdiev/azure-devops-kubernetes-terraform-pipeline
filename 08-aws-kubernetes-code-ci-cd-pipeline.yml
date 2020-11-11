@@ -38,26 +38,26 @@ stages:
         ArtifactName: 'manifests'
         publishLocation: 'Container'
 
-# - stage: Deploy
-#   displayName: Deploy image
-#   jobs:  
-#   - job: Deploy
-#     displayName: Deploy
-#     pool:
-#       vmImage: 'ubuntu-latest'
-#     steps:
-#     - task: DownloadPipelineArtifact@2
-#       displayName: Download Pipeline Artifact
-#       inputs:
-#         buildType: 'current'
-#         artifactName: 'manifests'
-#         itemPattern: '**/*.yaml'
-#         targetPath: '$(System.ArtifactsDirectory)'
-#     - task: KubernetesManifest@0
-#       displayName: Deploy to Kubernetes
-#       inputs:
-#         action: 'deploy'
-#         kubernetesServiceConnection: 'aws-kubrnetes-cluster-service-connection'
-#         namespace: 'default'
-#         manifests: '$(System.ArtifactsDirectory)/configuration/kubernetes/deployment.yaml'
-#         containers: in28min/currency-exchange-devops:$(tag)
+- stage: Deploy
+  displayName: Deploy image
+  jobs:  
+  - job: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: Download Pipeline Artifact
+      inputs:
+        buildType: 'current'
+        artifactName: 'manifests'
+        itemPattern: '**/*.yaml'
+        targetPath: '$(System.ArtifactsDirectory)'
+    - task: KubernetesManifest@0
+      displayName: Deploy to Kubernetes
+      inputs:
+        action: 'deploy'
+        kubernetesServiceConnection: 'aws-kubrnetes-cluster-service-connection'
+        namespace: 'default'
+        manifests: '$(System.ArtifactsDirectory)/configuration/kubernetes/deployment.yaml'
+        containers: in28min/currency-exchange-devops:$(tag)
